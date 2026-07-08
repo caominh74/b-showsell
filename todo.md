@@ -25,12 +25,12 @@ This checklist tracks the implementation progress of the B-ShowSell project acco
 - [x] Implement order data model and staff order management screens.
 
 ## Phase 3: Customer Commerce
-- [ ] Implement public product listing and product detail APIs.
-- [ ] Build customer web product browsing and product detail screens.
-- [ ] Implement cart APIs and web cart screens.
-- [ ] Implement mock checkout and order creation.
-- [ ] Implement customer order history and order detail screens.
-- [ ] Implement inventory deduction and order status transition validation.
+- [x] Implement public product listing and product detail APIs.
+- [x] Build customer web product browsing and product detail screens.
+- [x] Implement cart APIs and web cart screens.
+- [x] Implement mock checkout and order creation.
+- [x] Implement customer order history and order detail screens.
+- [x] Implement inventory deduction and order status transition validation.
 
 ## Phase 4: Content, Affiliate, and Collaboration Revenue
 - [ ] Implement advertising article CRUD and publish flow.

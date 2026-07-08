@@ -9,6 +9,8 @@ import { BrandsModule } from './admin/brands/brands.module';
 import { CampaignsModule } from './admin/campaigns/campaigns.module';
 import { ProductsModule } from './staff/products/products.module';
 import { OrdersModule } from './staff/orders/orders.module';
+import { CatalogModule } from './catalog/catalog.module';
+import { CommerceModule } from './customer/commerce/commerce.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { OrdersModule } from './staff/orders/orders.module';
     CampaignsModule,
     ProductsModule,
     OrdersModule,
+    CatalogModule,
+    CommerceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
