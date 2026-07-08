@@ -1,13 +1,500 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  CUSTOMER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role       @default(CUSTOMER)
+  status       UserStatus @default(ACTIVE)
+  avatarUrl    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  carts             Cart[]
+  orders            Order[]
+  reviews           ProductReview[]
+  affiliateClicks   AffiliateClick[]
+  campaignsCreated  Campaign[]          @relation("CampaignCreator")
+  milestonesAssigned CampaignMilestone[] @relation("MilestoneAssignee")
+  articlesAuthored  ContentArticle[]    @relation("ArticleAuthor")
+  socialPosts       SocialPost[]        @relation("SocialPostCreator")
+  reviewsModerated  ProductReview[]     @relation("ReviewModerator")
+  notifications     NotificationLog[]
+}
+
+enum BrandStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Brand {
+  id                    String      @id @default(uuid())
+  name                  String
+  slug                  String      @unique
+  description           String?
+  contactName           String?
+  contactEmail          String?
+  contactPhone          String?
+  websiteUrl            String?
+  facebookUrl           String?
+  tiktokUrl             String?
+  defaultCommissionRate Float       @default(0.0)
+  status                BrandStatus @default(ACTIVE)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  products       Product[]
+  campaigns      Campaign[]
+  affiliateLinks AffiliateLink[]
+}
+
+enum CollaborationType {
+  ADVERTISING
+  AFFILIATE
+  BRAND_AMBASSADOR
+  LIMITED_EDITION
+}
+
+enum CampaignStatus {
+  DRAFT
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Campaign {
+  id                        String            @id @default(uuid())
+  brandId                   String
+  name                      String
+  description               String?
+  collaborationType         CollaborationType
+  status                    CampaignStatus    @default(DRAFT)
+  startDate                 DateTime?
+  endDate                   DateTime?
+  advertisingFee            Float             @default(0.0)
+  expectedCommissionRate    Float?
+  actualAffiliateCommission Float             @default(0.0)
+  notes                     String?
+  createdById               String
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @updatedAt
+
+  brand          Brand               @relation(fields: [brandId], references: [id])
+  createdBy      User                @relation("CampaignCreator", fields: [createdById], references: [id])
+  milestones     CampaignMilestone[]
+  articles       ContentArticle[]
+  affiliateLinks AffiliateLink[]
+  socialPosts    SocialPost[]
+  socialMetrics  SocialMetric[]
+}
+
+enum MilestoneStatus {
+  PENDING
+  DONE
+  OVERDUE
+  CANCELLED
+}
+
+model CampaignMilestone {
+  id           String          @id @default(uuid())
+  campaignId   String
+  title        String
+  description  String?
+  dueAt        DateTime
+  reminderAt   DateTime?
+  status       MilestoneStatus @default(PENDING)
+  assignedToId String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  assignedTo User?    @relation("MilestoneAssignee", fields: [assignedToId], references: [id])
+}
+
+enum ArticleStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+model ContentArticle {
+  id            String        @id @default(uuid())
+  campaignId    String?
+  brandId       String?
+  title         String
+  slug          String        @unique
+  excerpt       String?
+  bodyMarkdown  String
+  coverImageUrl String?
+  status        ArticleStatus @default(DRAFT)
+  publishedAt   DateTime?
+  scheduledAt   DateTime?
+  authorId      String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  campaign       Campaign?       @relation(fields: [campaignId], references: [id])
+  author         User            @relation("ArticleAuthor", fields: [authorId], references: [id])
+  affiliateLinks AffiliateLink[]
+  socialPosts    SocialPost[]
+}
+
+enum Channel {
+  WEBSITE
+  FACEBOOK
+  TIKTOK
+  OTHER
+}
+
+enum AffiliateLinkStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model AffiliateLink {
+  id             String              @id @default(uuid())
+  campaignId     String?
+  brandId        String
+  productId      String?
+  articleId      String?
+  label          String
+  destinationUrl String
+  trackingCode   String              @unique
+  channel        Channel             @default(OTHER)
+  commissionRate Float?
+  clickCount     Int                 @default(0)
+  status         AffiliateLinkStatus @default(ACTIVE)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  brand     Brand           @relation(fields: [brandId], references: [id])
+  campaign  Campaign?       @relation(fields: [campaignId], references: [id])
+  product   Product?        @relation(fields: [productId], references: [id])
+  article   ContentArticle? @relation(fields: [articleId], references: [id])
+  clicks    AffiliateClick[]
+}
+
+model AffiliateClick {
+  id              String   @id @default(uuid())
+  affiliateLinkId String
+  customerId      String?
+  sessionId       String?
+  ipHash          String?
+  userAgent       String?
+  referrer        String?
+  clickedAt       DateTime @default(now())
+
+  affiliateLink AffiliateLink @relation(fields: [affiliateLinkId], references: [id])
+  customer      User?         @relation(fields: [customerId], references: [id])
+}
+
+enum SocialPlatform {
+  WEBSITE
+  FACEBOOK
+  TIKTOK
+}
+
+enum SocialPostStatus {
+  DRAFT
+  QUEUED
+  POSTED
+  FAILED
+}
+
+model SocialPost {
+  id             String           @id @default(uuid())
+  campaignId     String
+  articleId      String?
+  platform       SocialPlatform
+  status         SocialPostStatus @default(DRAFT)
+  postUrl        String?
+  providerPostId String?
+  scheduledAt    DateTime?
+  postedAt       DateTime?
+  errorMessage   String?
+  createdById    String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  campaign  Campaign        @relation(fields: [campaignId], references: [id])
+  article   ContentArticle? @relation(fields: [articleId], references: [id])
+  createdBy User            @relation("SocialPostCreator", fields: [createdById], references: [id])
+  metrics   SocialMetric[]
+}
+
+enum MetricSource {
+  MANUAL
+  IMPORTED
+  SEEDED
+}
+
+model SocialMetric {
+  id           String         @id @default(uuid())
+  campaignId   String
+  socialPostId String?
+  platform     SocialPlatform
+  metricDate   DateTime       @default(now())
+  reach        Int            @default(0)
+  impressions  Int            @default(0)
+  likes        Int            @default(0)
+  comments     Int            @default(0)
+  shares       Int            @default(0)
+  clicks       Int            @default(0)
+  ctr          Float          @default(0.0)
+  source       MetricSource   @default(MANUAL)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  campaign   Campaign    @relation(fields: [campaignId], references: [id])
+  socialPost SocialPost? @relation(fields: [socialPostId], references: [id])
+}
+
+enum CategoryStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model ProductCategory {
+  id          String         @id @default(uuid())
+  name        String
+  slug        String         @unique
+  description String?
+  parentId    String?
+  status      CategoryStatus @default(ACTIVE)
+
+  parent   ProductCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children ProductCategory[] @relation("CategoryHierarchy")
+  products Product[]
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  OUT_OF_STOCK
+  ARCHIVED
+}
+
+model Product {
+  id                String        @id @default(uuid())
+  brandId           String
+  categoryId        String
+  name              String
+  slug              String        @unique
+  description       String?
+  ingredients       String?
+  usageInstructions String?
+  price             Float
+  salePrice         Float?
+  costPrice         Float?
+  stockQuantity     Int           @default(0)
+  lowStockThreshold Int           @default(5)
+  status            ProductStatus @default(DRAFT)
+  isLimitedEdition  Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  brand          Brand           @relation(fields: [brandId], references: [id])
+  category       ProductCategory @relation(fields: [categoryId], references: [id])
+  images         ProductImage[]
+  orderItems     OrderItem[]
+  reviews        ProductReview[]
+  affiliateLinks AffiliateLink[]
+  cartItems      CartItem[]
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String
+  url       String
+  altText   String?
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+enum CartStatus {
+  ACTIVE
+  CONVERTED
+  ABANDONED
+}
+
+model Cart {
+  id         String     @id @default(uuid())
+  customerId String
+  status     CartStatus @default(ACTIVE)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  customer User       @relation(fields: [customerId], references: [id])
+  items    CartItem[]
+}
+
+model CartItem {
+  id                String @id @default(uuid())
+  cartId            String
+  productId         String
+  quantity          Int    @default(1)
+  unitPriceSnapshot Float?
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  MOCK_PENDING
+  MOCK_PAID
+  MOCK_FAILED
+  MOCK_REFUNDED
+}
+
+model Order {
+  id                   String        @id @default(uuid())
+  orderNumber          String        @unique
+  customerId           String
+  status               OrderStatus   @default(PENDING_PAYMENT)
+  paymentStatus        PaymentStatus @default(MOCK_PENDING)
+  subtotal             Float
+  shippingFee          Float         @default(0.0)
+  discountTotal        Float         @default(0.0)
+  total                Float
+  recipientName        String
+  recipientPhone       String
+  shippingAddressLine1 String
+  shippingAddressLine2 String?
+  ward                 String?
+  district             String?
+  city                 String?
+  notes                String?
+  placedAt             DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  customer User            @relation(fields: [customerId], references: [id])
+  items    OrderItem[]
+  reviews  ProductReview[]
+}
+
+model OrderItem {
+  id                  String @id @default(uuid())
+  orderId             String
+  productId           String
+  productNameSnapshot String
+  unitPriceSnapshot   Float
+  quantity            Int
+  lineTotal           Float
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  HIDDEN
+}
+
+model ProductReview {
+  id            String       @id @default(uuid())
+  productId     String
+  customerId    String
+  orderId       String
+  rating        Int
+  title         String?
+  body          String?
+  status        ReviewStatus @default(PENDING)
+  moderatedById String?
+  moderatedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  product       Product @relation(fields: [productId], references: [id])
+  customer      User    @relation(fields: [customerId], references: [id])
+  order         Order   @relation(fields: [orderId], references: [id])
+  moderatedBy   User?   @relation("ReviewModerator", fields: [moderatedById], references: [id])
+}
+
+enum RevenueSource {
+  ADVERTISING
+  AFFILIATE
+  PRODUCT_SALE
+}
+
+model RevenueRecord {
+  id           String        @id @default(uuid())
+  sourceType   RevenueSource
+  campaignId   String?
+  brandId      String?
+  orderId      String?
+  amount       Float
+  costAmount   Float         @default(0.0)
+  profitAmount Float         @default(0.0)
+  occurredAt   DateTime      @default(now())
+  notes        String?
+}
+
+enum NotificationType {
+  REMINDER
+  ORDER_STATUS
+  PASSWORD_RESET
+  SYSTEM
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL_MOCK
+  SMS_MOCK
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+model NotificationLog {
+  id          String              @id @default(uuid())
+  userId      String?
+  type        NotificationType
+  channel     NotificationChannel
+  subject     String
+  body        String
+  status      NotificationStatus  @default(QUEUED)
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  createdAt   DateTime            @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
 }

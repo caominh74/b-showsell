@@ -7,15 +7,14 @@ This checklist tracks the implementation progress of the B-ShowSell project acco
 - [x] Scaffold Next.js web app (Next.js 15, React, TypeScript, Tailwind CSS v4, shadcn/ui).
 - [x] Scaffold Backend API (NestJS, TypeScript).
 - [x] Initialize ORM (Prisma).
-- [ ] Set up Docker Compose for local PostgreSQL and Redis.
-- [ ] Create database schema in `schema.prisma` for users, roles, brands, products, campaigns, orders, reviews, and reports.
-- [ ] Generate Prisma client and run initial database migration.
-- [ ] Implement NestJS app structure, config module, database module, auth module, and OpenAPI/Swagger documentation.
-- [ ] Implement authentication (email/password), JWT refresh flow, RBAC guards.
-- [ ] Create seed scripts for users and initial data.
-- [ ] Write protected route tests.
-- [ ] Scaffold Next.js routes: public routes, authenticated layout, role-aware navigation, login, Admin dashboard, Staff routes, Customer account routes.
-- [ ] Build a shared API client, auth state handling, and route guards for the Next.js web app.
+- [x] Create database schema in `schema.prisma` for users, roles, brands, products, campaigns, orders, reviews, and reports.
+- [x] Generate Prisma client and run initial database migration.
+- [x] Implement NestJS app structure, config module, database module, auth module, and OpenAPI/Swagger documentation.
+- [x] Implement authentication (email/password), JWT refresh flow, RBAC guards.
+- [x] Create seed scripts for users and initial data.
+- [x] Write protected route tests.
+- [x] Scaffold Next.js routes: public routes, authenticated layout, role-aware navigation, login, Admin dashboard, Staff routes, Customer account routes.
+- [x] Build a shared API client, auth state handling, and route guards for the Next.js web app.
 
 ## Phase 2: Core Admin and Staff Operations
 - [ ] Implement Admin user management API and UI.

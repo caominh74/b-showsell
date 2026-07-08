@@ -14,13 +14,15 @@ export default function Home() {
       <header className="relative z-10 flex justify-between items-center p-6 border-b border-white/20 bg-white/40 backdrop-blur-md">
         <div className="text-2xl font-black tracking-tighter text-slate-900">B-SHOWSELL</div>
         <nav className="hidden md:flex gap-8 font-medium text-slate-700">
-          <a href="#" className="hover:text-pink-600 transition-colors">Shop</a>
-          <a href="#" className="hover:text-pink-600 transition-colors">Blog</a>
+          <Link href="/products" className="hover:text-pink-600 transition-colors">Shop</Link>
+          <Link href="/articles" className="hover:text-pink-600 transition-colors">Blog</Link>
           <a href="#" className="hover:text-pink-600 transition-colors">Campaigns</a>
           <a href="#" className="hover:text-pink-600 transition-colors">About</a>
         </nav>
         <div className="flex gap-4">
-          <Button variant="ghost" className="text-slate-700 hover:text-pink-600">Login</Button>
+          <Link href="/login" className={buttonVariants({ variant: "ghost", className: "text-slate-700 hover:text-pink-600" })}>
+            Login
+          </Link>
           <Button className="bg-slate-900 text-white hover:bg-slate-800 rounded-full px-6">Cart (0)</Button>
         </div>
       </header>
@@ -45,21 +47,21 @@ export default function Home() {
             
             <p className="text-lg text-slate-600 max-w-lg leading-relaxed">
               Curated by top beauty experts. Discover our exclusive brand collaborations, 
-              premium skincare, and the season's most sought-after makeup essentials.
+              premium skincare, and the season&apos;s most sought-after makeup essentials.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link 
-                href="/shop" 
+                href="/products" 
                 className={buttonVariants({ size: "lg", className: "bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-full shadow-lg shadow-pink-200 h-14 px-8 text-base" })}
               >
                 Shop the Collection
               </Link>
               <Link 
-                href="/reviews" 
+                href="/articles" 
                 className={buttonVariants({ size: "lg", variant: "outline", className: "rounded-full h-14 px-8 text-base border-slate-300 text-slate-700 hover:bg-slate-100 bg-white/50 backdrop-blur-sm" })}
               >
-                Read Latest Reviews
+                Read Latest Articles
               </Link>
             </div>
             
