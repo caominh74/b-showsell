@@ -17,12 +17,12 @@ This checklist tracks the implementation progress of the B-ShowSell project acco
 - [x] Build a shared API client, auth state handling, and route guards for the Next.js web app.
 
 ## Phase 2: Core Admin and Staff Operations
-- [ ] Implement Admin user management API and UI.
-- [ ] Implement brand CRUD API and UI.
-- [ ] Implement campaign CRUD, collaboration types, campaign statuses, milestones, and internal reminders.
-- [ ] Implement product category and product CRUD for Staff.
-- [ ] Implement image upload adapter using local storage.
-- [ ] Implement order data model and staff order management screens.
+- [x] Implement Admin user management API and UI.
+- [x] Implement brand CRUD API and UI.
+- [x] Implement campaign CRUD, collaboration types, campaign statuses, milestones, and internal reminders.
+- [x] Implement product category and product CRUD for Staff.
+- [x] Implement image upload adapter using local storage.
+- [x] Implement order data model and staff order management screens.
 
 ## Phase 3: Customer Commerce
 - [ ] Implement public product listing and product detail APIs.
