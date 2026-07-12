@@ -273,6 +273,8 @@ Rationale: This stack keeps v1 focused on one responsive web application plus a 
 - Internal dashboards and reports using system data.
 - CSV export for reports.
 - Seed data for roles, users, brands, campaigns, products, orders, and reviews.
+- Required academic/project documentation set: user requirements, software requirement specification, architecture design, detailed design, implementation and testing document, installation guide, user manual, source code package, and deployable software package.
+- UML 2.0 modeling artifacts for the core system analysis and design package.
 
 ### Non-Goals / Mocked or Stubbed for V1
 
@@ -287,6 +289,8 @@ Rationale: This stack keeps v1 focused on one responsive web application plus a 
 - Advanced AI content generation, recommendation engines, and influencer fraud detection are not part of v1.
 - Multi-vendor marketplace functionality is not part of v1. Products are sold by the blogger's business only.
 - Native iOS, Android, Expo, or React Native apps are not part of v1. All customer functionality must be implemented in the responsive web app.
+- A native or hybrid customer mobile app is a source-document expectation, but is outside the current web-only V1 unless the team explicitly reopens mobile scope.
+- Real deploy-to-production operations are outside the current local/staging target unless hosting credentials and deployment infrastructure are provided.
 
 ## 6. High-Level Data Model
 
@@ -867,6 +871,16 @@ Provide seed data for:
 - Error logs for failed background jobs.
 - Basic health endpoints for API, database, and Redis.
 
+### Academic and Delivery Documentation
+
+- Maintain source traceability from the original capstone registration document to the final project specification.
+- Provide UML 2.0 diagrams for use case, domain/class, sequence, activity, deployment, and architecture views where relevant.
+- Provide user requirements and software requirement specification documents aligned with the implemented system.
+- Provide architecture design and detailed design documents covering frontend, backend, database, authentication, integrations, and deployment topology.
+- Provide implementation and testing documentation with test scope, test cases, execution evidence, known limitations, and build verification.
+- Provide an installation guide, user manual, source code package, and deployable software package for submission.
+- Prepare concise viva/demo notes so team members can explain requirements, design choices, implementation, and testing evidence.
+
 ## 9. Phased Build Order
 
 ### Phase 1: Foundation
@@ -924,10 +938,21 @@ Provide seed data for:
 6. Add final seed data, loading states, empty states, error states, and smoke tests.
 7. Prepare installation guide and user manual.
 
+### Phase 7: Academic Documentation and Submission Readiness
+
+1. Create source-traceability notes from the original capstone registration document to `docs/spec.md`.
+2. Create UML 2.0 analysis and design diagrams.
+3. Prepare user requirements and software requirement specification documents.
+4. Prepare architecture design and detailed design documents.
+5. Prepare implementation and testing documentation with verification evidence.
+6. Prepare source code and deployable software package instructions.
+7. Prepare viva/demo notes and role-based explanation checklist for the team.
+
 ## 10. Open Questions / Assumptions Made
 
 - The source document mentions a web app for Admin/Staff and a mobile app for Customers. Per the latest instruction, this spec assumes v1 is webapp-only: Admin, Staff, Customer, and Guest experiences are all implemented in one responsive web application.
 - The source document mentions ASP.NET Core API and Firebase as possible technologies, but also allows other suitable technologies. This spec recommends NestJS, PostgreSQL, and Prisma as the best fit for a modern TypeScript monorepo.
+- The source document requires software development process artifacts and UML 2.0 modeling. This spec now treats those as project deliverables in addition to application code.
 - The source document does not define payment methods. This spec assumes mock payment in v1 and leaves real payment gateway selection for later.
 - The source document does not define shipping or delivery providers. This spec assumes manual staff-controlled fulfillment in v1.
 - The source document asks for Facebook/TikTok APIs, but real API approval and credentials can be slow. This spec treats real social posting and metric import as v1 non-goals and implements provider interfaces with mocks.

@@ -1,6 +1,6 @@
 # B-ShowSell Project To-Do List
 
-This checklist tracks the implementation progress of the B-ShowSell project according to the `spec.md` phased build order.
+This checklist tracks the implementation progress of the B-ShowSell project according to the `docs/spec.md` phased build order.
 
 ## Phase 1: Foundation
 - [x] Set up monorepo (Turborepo).
