@@ -93,6 +93,11 @@ export async function fetchApi<T>(endpoint: string, options: RequestInit = {}) {
     throw new Error(message || "API request failed")
   }
 
+  const contentType = response.headers.get("content-type") || ""
+  if (contentType.includes("text/csv") || contentType.includes("text/plain")) {
+    return response.text() as Promise<T>
+  }
+
   return response.json().catch(() => null) as Promise<T>
 }
 

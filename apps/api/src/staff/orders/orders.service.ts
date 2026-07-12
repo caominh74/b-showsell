@@ -49,13 +49,32 @@ export class OrdersService {
       throw new BadRequestException(`Cannot change order from ${order.status} to ${dto.status}`);
     }
 
-    return this.prisma.order.update({
-      where: { id },
-      data: {
-        status: dto.status,
-        paymentStatus: dto.paymentStatus ?? this.inferPaymentStatus(dto.status),
-      },
-      include: { customer: true, items: true },
+    return this.prisma.$transaction(async (tx) => {
+      const updated = await tx.order.update({
+        where: { id },
+        data: {
+          status: dto.status,
+          paymentStatus: dto.paymentStatus ?? this.inferPaymentStatus(dto.status),
+        },
+        include: { customer: true, items: true },
+      });
+
+      if (order.paymentStatus !== 'MOCK_PAID' && updated.paymentStatus === 'MOCK_PAID') {
+        const existingRevenue = await tx.revenueRecord.findFirst({ where: { orderId: id, sourceType: 'PRODUCT_SALE' } });
+        if (!existingRevenue) {
+          await tx.revenueRecord.create({
+            data: {
+              sourceType: 'PRODUCT_SALE',
+              orderId: id,
+              amount: updated.total,
+              profitAmount: updated.total,
+              notes: `Product sale revenue for order ${updated.orderNumber}.`,
+            },
+          });
+        }
+      }
+
+      return updated;
     });
   }
 

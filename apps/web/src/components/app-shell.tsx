@@ -15,6 +15,7 @@ import {
   Settings,
   ShoppingBag,
   ShoppingCart,
+  Star,
   Users,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
@@ -35,6 +36,7 @@ const navItems: Record<Role, { href: string; label: string; icon: React.ElementT
     { href: "/staff", label: "Operations", icon: Boxes },
     { href: "/staff/products", label: "Products", icon: PackageSearch },
     { href: "/staff/orders", label: "Orders", icon: ShoppingBag },
+    { href: "/staff/reviews", label: "Reviews", icon: Star },
   ],
   CUSTOMER: [
     { href: "/account", label: "Account", icon: Home },

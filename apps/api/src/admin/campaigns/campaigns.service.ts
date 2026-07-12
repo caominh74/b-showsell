@@ -98,6 +98,26 @@ export class CampaignsService {
     return milestone;
   }
 
+  async exportMilestonesIcs(campaignId: string) {
+    const campaign = await this.findOne(campaignId);
+    const events = campaign.milestones.map((milestone) =>
+      [
+        'BEGIN:VEVENT',
+        `UID:${milestone.id}@b-showsell`,
+        `DTSTAMP:${this.toIcsDate(new Date())}`,
+        `DTSTART:${this.toIcsDate(milestone.dueAt)}`,
+        `SUMMARY:${this.escapeIcs(`${campaign.name}: ${milestone.title}`)}`,
+        milestone.description ? `DESCRIPTION:${this.escapeIcs(milestone.description)}` : undefined,
+        'END:VEVENT',
+      ]
+        .filter(Boolean)
+        .join('\r\n'),
+    );
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//B-ShowSell//Campaign Milestones//EN', ...events, 'END:VCALENDAR'].join(
+      '\r\n',
+    );
+  }
+
   private assertDates(startDate?: string, endDate?: string) {
     if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
       throw new BadRequestException('Campaign endDate cannot be before startDate');
@@ -176,5 +196,13 @@ export class CampaignsService {
         scheduledAt: reminderAt,
       },
     });
+  }
+
+  private toIcsDate(date: Date) {
+    return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+  }
+
+  private escapeIcs(value: string) {
+    return value.replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n');
   }
 }

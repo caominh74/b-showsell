@@ -144,6 +144,17 @@ export class CommerceService {
             },
           });
         }
+        await tx.revenueRecord.create({
+          data: {
+            sourceType: 'PRODUCT_SALE',
+            orderId: order.id,
+            amount: total,
+            costAmount: hydrated.items.reduce((sum, item) => sum + (item.product.costPrice ?? 0) * item.quantity, 0),
+            profitAmount:
+              total - hydrated.items.reduce((sum, item) => sum + (item.product.costPrice ?? 0) * item.quantity, 0),
+            notes: `Product sale revenue for order ${order.orderNumber}.`,
+          },
+        });
       }
 
       await tx.cart.update({ where: { id: cart.id }, data: { status: 'CONVERTED' } });

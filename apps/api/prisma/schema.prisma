@@ -65,6 +65,7 @@ model Brand {
 
   products       Product[]
   campaigns      Campaign[]
+  articles       ContentArticle[]
   affiliateLinks AffiliateLink[]
 }
 
@@ -156,6 +157,7 @@ model ContentArticle {
   updatedAt     DateTime      @updatedAt
 
   campaign       Campaign?       @relation(fields: [campaignId], references: [id])
+  brand          Brand?          @relation(fields: [brandId], references: [id])
   author         User            @relation("ArticleAuthor", fields: [authorId], references: [id])
   affiliateLinks AffiliateLink[]
   socialPosts    SocialPost[]

@@ -11,6 +11,10 @@ import { ProductsModule } from './staff/products/products.module';
 import { OrdersModule } from './staff/orders/orders.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CommerceModule } from './customer/commerce/commerce.module';
+import { ContentModule } from './admin/content/content.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { ReportsModule } from './reports/reports.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -24,6 +28,10 @@ import { CommerceModule } from './customer/commerce/commerce.module';
     OrdersModule,
     CatalogModule,
     CommerceModule,
+    ContentModule,
+    ReviewsModule,
+    ReportsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

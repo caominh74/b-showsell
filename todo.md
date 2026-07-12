@@ -33,26 +33,26 @@ This checklist tracks the implementation progress of the B-ShowSell project acco
 - [x] Implement inventory deduction and order status transition validation.
 
 ## Phase 4: Content, Affiliate, and Collaboration Revenue
-- [ ] Implement advertising article CRUD and publish flow.
-- [ ] Implement public article listing and article detail.
-- [ ] Implement affiliate link CRUD.
-- [ ] Implement affiliate redirect endpoint and click tracking.
-- [ ] Link articles, campaigns, brands, products, and affiliate links.
-- [ ] Implement revenue records for advertising fees, affiliate commissions, and product sales.
+- [x] Implement advertising article CRUD and publish flow.
+- [x] Implement public article listing and article detail.
+- [x] Implement affiliate link CRUD.
+- [x] Implement affiliate redirect endpoint and click tracking.
+- [x] Link articles, campaigns, brands, products, and affiliate links.
+- [x] Implement revenue records for advertising fees, affiliate commissions, and product sales.
 
 ## Phase 5: Reviews, Reports, and Dashboards
-- [ ] Implement customer product reviews with purchase verification.
-- [ ] Implement staff review moderation.
-- [ ] Implement admin revenue report APIs.
-- [ ] Implement staff order statistics.
-- [ ] Implement campaign KPI dashboard using internal and manually entered social metrics.
-- [ ] Implement CSV export for reports.
+- [x] Implement customer product reviews with purchase verification.
+- [x] Implement staff review moderation.
+- [x] Implement admin revenue report APIs.
+- [x] Implement staff order statistics.
+- [x] Implement campaign KPI dashboard using internal and manually entered social metrics.
+- [x] Implement CSV export for reports.
 
 ## Phase 6: Integration Stubs and Polish
-- [ ] Implement mock Facebook and TikTok social publishing providers.
-- [ ] Implement social post queue (BullMQ/Redis) and retry behavior.
-- [ ] Implement manual social metric entry.
-- [ ] Implement notification log and mock email/SMS sender.
-- [ ] Implement ICS export for campaign milestones.
-- [ ] Add final seed data, loading states, empty states, error states, and web smoke tests.
-- [ ] Prepare installation guide and user manual.
+- [x] Implement mock Facebook and TikTok social publishing providers.
+- [x] Implement social post queue (BullMQ/Redis) and retry behavior.
+- [x] Implement manual social metric entry.
+- [x] Implement notification log and mock email/SMS sender.
+- [x] Implement ICS export for campaign milestones.
+- [x] Add final seed data, loading states, empty states, error states, and web smoke tests.
+- [x] Prepare installation guide and user manual.

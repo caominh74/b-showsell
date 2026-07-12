@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Header, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
@@ -63,5 +63,11 @@ export class CampaignsController {
   @Patch('milestones/:id')
   updateMilestone(@Param('id') id: string, @Body() dto: UpdateMilestoneDto) {
     return this.campaignsService.updateMilestone(id, dto);
+  }
+
+  @Get('campaigns/:id/milestones.ics')
+  @Header('Content-Type', 'text/calendar')
+  exportMilestones(@Param('id') id: string) {
+    return this.campaignsService.exportMilestonesIcs(id);
   }
 }
